@@ -12,13 +12,14 @@ int pontos,nivel;
 char apelido;
 }pessoa;
 
-void obj(int x1, int y1, int x2, int y2);
-void botao(int x1, int y1, int x2, int y2, char rotulo[30]);
-void botaoPressionado(int x1, int y1, int x2, int y2, char rotulo[30]);
+int obj(int x1, int y1, int x2, int y2);
+int objpress(int x1, int y1, int x2, int y2);
+void botao(int x1, int y1, int x2, int y2, char rotulo[6]);
+void botaoPressionado(int x1, int y1, int x2, int y2, char rotulo[15]);
 
-main(){
+int main(){
 
-int j,i,i2,v[0][0],flag1=0,dificult;
+int j,i,i2,flag1=0,dificult=0,a1=0,b1=0,a2=0,b2=0;
 
 initwindow(600,600,"jogo",0,0);
 
@@ -72,32 +73,57 @@ if (mousex()>= 320 && mousex()<= 350 && mousey()>=300 && mousey()<=330 && ismous
 if(mousex()>= 230 && mousex()<= 320 && mousey()>=340 && mousey()<=370 && ismouseclick(WM_LBUTTONDOWN)){
     botaoPressionado(230, 340, 320, 370, "jogar");
     flag1=2;
+    clearviewport();
 }
 i2=dificult;
-v[0][0]=dificult,4;
+
 }
 //game
 while(!kbhit()){
     if(flag1==2){
-        clearviewport();
         readimagefile("agua.jpg",0,0,600,600);
             delay(100);
+            int v[dificult][4];
+
         for(i=0;i<dificult;i++){
-           obj((rand()*rand())% 569+1,(rand()*rand())% 569+1, 0, 0);
-                    j++;
-                }
-        flag1=0;
-                }
-    }
+
+                a1 = rand() % 569 + 1;
+                b1 = rand() % 569 + 1;
+                a2 = a1+30;
+                b2 = b1;
+                v[i][0]=a1;
+                v[i][1]=a2;
+                v[i][2]=b1;
+                v[i][3]=b2;
+                printf("%d  ", a1);
+        }
+        for(i=0;i<dificult;i++){
+            obj(v[i][0], v[i][2], v[i][1], v[i][3]);
+        }
+          if (mousex()>= v[i][0] && mousex()<= v[i][1] && mousey()>=v[i][2] && mousey()<=v[i][3] && ismouseclick(WM_LBUTTONDOWN)){
+               objpress(v[i][0], v[i][2], v[i][1], v[i][3]);
+                    clearmouseclick(WM_LBUTTONDOWN);
+               }
+        }
+        dificult = -1;
+        }
+
+    flag1=0;
+    return 0;
 }
-void obj(int x1, int y1, int x2, int y2)
+int obj(int x1, int y1, int x2, int y2)
 {
-    x2=x1+30;
-    y2=y1+30;
     setfillstyle(1,14);
     bar(x1,y1,x2,y2);
+    return x1,y1,x2,y2;
 }
-void botao(int x1, int y1, int x2, int y2, char rotulo[30])
+int objpress(int x1, int y1, int x2, int y2)
+{
+    setfillstyle(1,3);
+    bar(x1,y1,x2,y2);
+    return x1,y1,x2,y2;
+}
+void botao(int x1, int y1, int x2, int y2, char rotulo[6])
 {
 setfillstyle(1,7);
 bar(x1,y1,x2,y2);
